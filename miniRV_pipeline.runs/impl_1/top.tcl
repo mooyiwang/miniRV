@@ -60,14 +60,14 @@ proc step_failed { step } {
   close $ch
 }
 
-set_msg_config -id {Common 17-41} -limit 10000000
 
 start_step write_bitstream
 set ACTIVE_STEP write_bitstream
 set rc [catch {
   create_msg_db write_bitstream.pb
+  set_param xicom.use_bs_reader 1
   open_checkpoint top_routed.dcp
-  set_property webtalk.parent_dir D:/200210231/miniRV_ver.download_singlecycle/miniRV_ver.download_singlecycle.cache/wt [current_project]
+  set_property webtalk.parent_dir D:/200210231/miniRV_pipeline/miniRV_pipeline.cache/wt [current_project]
   set_property XPM_LIBRARIES XPM_CDC [current_project]
   catch { write_mem_info -force top.mmi }
   write_bitstream -force top.bit 

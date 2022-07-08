@@ -26,22 +26,11 @@ module MEMWB(
     input wire [31:0]   mem_rf_wD,
     input wire          mem_rf_wE,
     input wire [4:0]    mem_wR,
-    input wire          mem_rf_rE1,
-    input wire          mem_rf_rE2,
     output reg [31:0]   wb_rf_wD,
     output reg          wb_rf_wE,
-    output reg [4:0]    wb_wR,
-    output reg          wb_rf_rE1,
-    output reg          wb_rf_rE2
+    output reg [4:0]    wb_wR
     );
-always@(posedge clk_i or negedge rst_n)begin 
-    if(~rst_n) wb_rf_rE1 <= 1'b0;
-    else wb_rf_rE1 <= mem_rf_rE1;
-end
-always@(posedge clk_i or negedge rst_n)begin 
-    if(~rst_n) wb_rf_rE2 <= 1'b0;
-    else wb_rf_rE2 <= mem_rf_rE2;
-end
+    
 always@(posedge clk_i or negedge rst_n)begin
     if(~rst_n) wb_rf_wD <= 32'b0;
     else wb_rf_wD <= mem_rf_wD;

@@ -83,18 +83,26 @@ wire [31:0] mem_rf_wD;
 wire [31:0] dmem_rD;
 wire id_rf_rE1;
 wire id_rf_rE2;
-wire ex_rf_rE1;
-wire ex_rf_rE2;
-wire mem_rf_rE1;
-wire mem_rf_rE2;
-wire wb_rf_rE1;
-wire wb_rf_rE2;
+wire [1:0] rD1_sel;
+wire [1:0] rD2_sel;
+wire [31:0] ex_D;
+wire [31:0] mem_D;
+wire [31:0] wb_D;
+wire id_load;
+wire ex_load;
+wire mem_load;
+wire stall;
+wire idex_clear;
+wire ifid_clear;
 
 assign mem_rf_wD = mem_wb_sel[0]? dmem_rD: (mem_wb_sel[1]? mem_pc4: mem_c);
 assign adr = mem_c;
 assign wE = mem_dmem_wE;
 assign wD = mem_rD2;
 assign dmem_rD = rD;
+assign ex_D = ex_c;
+assign mem_D = mem_load? dmem_rD:mem_c;
+assign wb_D = wb_rf_wD;
 
 MEMWB u_memwb(
     .clk_i      (clk),
@@ -102,13 +110,9 @@ MEMWB u_memwb(
     .mem_rf_wD  (mem_rf_wD),
     .mem_rf_wE  (mem_rf_wE),
     .mem_wR     (mem_wR),
-    .mem_rf_rE1 (mem_rf_rE1),
-    .mem_rf_rE2 (mem_rf_rE2),
     .wb_rf_wD   (wb_rf_wD),
     .wb_rf_wE   (wb_rf_wE),
-    .wb_wR      (wb_wR),
-    .wb_rf_rE1  (wb_rf_rE1),
-    .wb_rf_rE2  (wb_rf_rE2)
+    .wb_wR      (wb_wR)
     );
 
 EXMEM u_exmem(
@@ -121,8 +125,7 @@ EXMEM u_exmem(
     .ex_wb_sel  (ex_wb_sel),
     .ex_rD2     (ex_rD2),
     .ex_dmem_wE (ex_dmem_wE),
-    .ex_rf_rE1  (ex_rf_rE1),
-    .ex_rf_rE2  (ex_rf_rE2),
+    .ex_load    (ex_load),
     .mem_pc4     (mem_pc4),
     .mem_c       (mem_c),
     .mem_rf_wE   (mem_rf_wE),
@@ -130,8 +133,7 @@ EXMEM u_exmem(
     .mem_wb_sel  (mem_wb_sel),
     .mem_rD2     (mem_rD2),
     .mem_dmem_wE (mem_dmem_wE),
-    .mem_rf_rE1  (mem_rf_rE1),
-    .mem_rf_rE2  (mem_rf_rE2)
+    .mem_load   (mem_load)
     );
     
 execute u_execute(
@@ -147,6 +149,7 @@ execute u_execute(
 IDEX u_idex(
     .clk_i      (clk),
     .rst_n      (rst_n),
+    .idex_clear (idex_clear),
     .id_rf_wE   (id_rf_wE),
     .id_pc4     (id_pc4),
     .id_rD1     (id_rD1),
@@ -158,8 +161,7 @@ IDEX u_idex(
     .id_alu_op  (id_alu_op),
     .id_dmem_wE (id_dmem_wE),
     .id_wb_sel  (id_wb_sel),
-//    .id_rf_rE1  (id_rf_rE1),
-//    .id_rf_rE2  (id_rf_rE2),
+    .id_load    (id_load),
     .ex_rf_wE   (ex_rf_wE),
     .ex_pc4     (ex_pc4),
     .ex_rD1     (ex_rD1),
@@ -170,11 +172,29 @@ IDEX u_idex(
     .ex_alub_sel(ex_alub_sel),
     .ex_alu_op  (ex_alu_op),
     .ex_dmem_wE (ex_dmem_wE),
-    .ex_wb_sel  (ex_wb_sel)
-//    .ex_rf_rE1  (ex_rf_rE1),
-//    .ex_rf_rE2  (ex_rf_rE2)
+    .ex_wb_sel  (ex_wb_sel),
+    .ex_load    (ex_load)
     );
 
+hazard_handler u_hazard_handler(
+    .id_rs1     (id_inst[19:15]),
+    .id_rs2     (id_inst[24:20]),
+    .id_rf_rE1  (id_rf_rE1),
+    .id_rf_rE2  (id_rf_rE2),
+    .ex_wR      (ex_wR),
+    .mem_wR     (mem_wR),
+    .wb_wR      (wb_wR),
+    .ex_rf_wE   (ex_rf_wE),
+    .mem_rf_wE  (mem_rf_wE),
+    .wb_rf_wE   (wb_rf_wE),
+    .ex_load    (ex_load),
+    .branch     (pc_sel),
+    .rD1_sel    (rD1_sel),
+    .rD2_sel    (rD2_sel),
+    .stall      (stall),
+    .idex_clear (idex_clear),
+    .ifid_clear (ifid_clear)
+    );
 idecode u_idecode(
     .clk_i      (clk),
     .rst_n      (rst_n),
@@ -186,6 +206,11 @@ idecode u_idecode(
     .rf_wE      (wb_rf_wE),
     .rf_wR      (wb_wR),
     .pcbja_sel  (pcbja_sel),
+    .rD1_sel    (rD1_sel),
+    .rD2_sel    (rD2_sel),
+    .ex_D       (ex_D),
+    .mem_D      (mem_D),
+    .wb_D       (wb_D),
     .ext        (id_ext),
     .rD1        (id_rD1),
     .rD2        (id_rD2),
@@ -214,13 +239,16 @@ control u_control(
     .dmem_we    (id_dmem_wE),
     .wd_sel     (id_wb_sel),
     .rf_rE1     (id_rf_rE1),
-    .rf_rE2     (id_rf_rE2)
+    .rf_rE2     (id_rf_rE2),
+    .load       (id_load)
     );
 
 
 IFID u_ifid(
     .clk_i      (clk),
     .rst_n      (rst_n),
+    .stall      (stall),
+    .ifid_clear (ifid_clear),
     .if_pc      (if_pc),
     .if_pc4     (if_pc4),
     .if_inst    (if_inst),
@@ -235,6 +263,7 @@ assign pc_sel = jump | (pc_beq & br_eq) | (pc_bne & ~br_eq) | (pc_blt & br_lt) |
 ifetch u_ifetch(
     .clk_i      (clk),
     .rst_n      (rst_n),
+    .stall      (stall),
     .pc_sel     (pc_sel),
     .pcbj       (pcbj),
     .pc         (if_pc),

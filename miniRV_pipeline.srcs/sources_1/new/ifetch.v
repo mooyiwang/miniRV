@@ -23,6 +23,7 @@
 module ifetch(
     input wire          clk_i,
     input wire          rst_n,
+    input wire          stall,
     input wire          pc_sel,
     input wire [31:0]   pcbj,
     output reg [31:0]   pc,
@@ -36,6 +37,7 @@ assign pc_next = pc_sel? pcbj:pc4;
 
 always@(posedge clk_i or negedge rst_n)begin
     if(~rst_n) pc <= 32'b0;
+    else if(stall)  pc <= pc;
     else pc <= pc_next;
 end
 

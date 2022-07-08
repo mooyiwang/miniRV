@@ -37,7 +37,7 @@ reg  [6: 0] led_cx;
 reg  [3: 0] digit;
 reg  [31:0] cal_result;
 
-assign cnt_end =  32'd49999;
+assign cnt_end =  32'd199999;
 assign digit_led_cx_o = {led_cx, 1'b1};
 
 

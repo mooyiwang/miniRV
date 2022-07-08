@@ -1,11 +1,11 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-// Date        : Fri Jun 24 14:59:50 2022
-// Host        : 217-15 running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim -rename_top cpuclk -prefix
-//               cpuclk_ clkcup_sim_netlist.v
-// Design      : clkcup
+// Date        : Fri Jul  8 17:35:20 2022
+// Host        : 608-16 running 64-bit major release  (build 9200)
+// Command     : write_verilog -force -mode funcsim
+//               D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk_sim_netlist.v
+// Design      : cpuclk
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
 // Device      : xc7a100tfgg484-1
@@ -25,13 +25,14 @@ module cpuclk
   wire clk_out1;
   wire locked;
 
-  cpuclk_clkcup_clk_wiz inst
+  cpuclk_cpuclk_clk_wiz inst
        (.clk_in1(clk_in1),
         .clk_out1(clk_out1),
         .locked(locked));
 endmodule
 
-module cpuclk_clkcup_clk_wiz
+(* ORIG_REF_NAME = "cpuclk_clk_wiz" *) 
+module cpuclk_cpuclk_clk_wiz
    (clk_out1,
     locked,
     clk_in1);
@@ -40,11 +41,11 @@ module cpuclk_clkcup_clk_wiz
   input clk_in1;
 
   wire clk_in1;
-  wire clk_in1_clkcup;
+  wire clk_in1_cpuclk;
   wire clk_out1;
-  wire clk_out1_clkcup;
-  wire clkfbout_buf_clkcup;
-  wire clkfbout_clkcup;
+  wire clk_out1_cpuclk;
+  wire clkfbout_buf_cpuclk;
+  wire clkfbout_cpuclk;
   wire locked;
   wire NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED;
@@ -56,8 +57,8 @@ module cpuclk_clkcup_clk_wiz
 
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkf_buf
-       (.I(clkfbout_clkcup),
-        .O(clkfbout_buf_clkcup));
+       (.I(clkfbout_cpuclk),
+        .O(clkfbout_buf_cpuclk));
   (* BOX_TYPE = "PRIMITIVE" *) 
   (* CAPACITANCE = "DONT_CARE" *) 
   (* IBUF_DELAY_VALUE = "0" *) 
@@ -66,19 +67,19 @@ module cpuclk_clkcup_clk_wiz
     .IOSTANDARD("DEFAULT")) 
     clkin1_ibufg
        (.I(clk_in1),
-        .O(clk_in1_clkcup));
+        .O(clk_in1_cpuclk));
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkout1_buf
-       (.I(clk_out1_clkcup),
+       (.I(clk_out1_cpuclk),
         .O(clk_out1));
   (* BOX_TYPE = "PRIMITIVE" *) 
   PLLE2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
-    .CLKFBOUT_MULT(33),
+    .CLKFBOUT_MULT(9),
     .CLKFBOUT_PHASE(0.000000),
     .CLKIN1_PERIOD(10.000000),
     .CLKIN2_PERIOD(0.000000),
-    .CLKOUT0_DIVIDE(33),
+    .CLKOUT0_DIVIDE(9),
     .CLKOUT0_DUTY_CYCLE(0.500000),
     .CLKOUT0_PHASE(0.000000),
     .CLKOUT1_DIVIDE(1),
@@ -97,7 +98,7 @@ module cpuclk_clkcup_clk_wiz
     .CLKOUT5_DUTY_CYCLE(0.500000),
     .CLKOUT5_PHASE(0.000000),
     .COMPENSATION("ZHOLD"),
-    .DIVCLK_DIVIDE(4),
+    .DIVCLK_DIVIDE(1),
     .IS_CLKINSEL_INVERTED(1'b0),
     .IS_PWRDWN_INVERTED(1'b0),
     .IS_RST_INVERTED(1'b0),
@@ -105,12 +106,12 @@ module cpuclk_clkcup_clk_wiz
     .REF_JITTER2(0.010000),
     .STARTUP_WAIT("FALSE")) 
     plle2_adv_inst
-       (.CLKFBIN(clkfbout_buf_clkcup),
-        .CLKFBOUT(clkfbout_clkcup),
-        .CLKIN1(clk_in1_clkcup),
+       (.CLKFBIN(clkfbout_buf_cpuclk),
+        .CLKFBOUT(clkfbout_cpuclk),
+        .CLKIN1(clk_in1_cpuclk),
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
-        .CLKOUT0(clk_out1_clkcup),
+        .CLKOUT0(clk_out1_cpuclk),
         .CLKOUT1(NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED),
         .CLKOUT2(NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED),
         .CLKOUT3(NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED),

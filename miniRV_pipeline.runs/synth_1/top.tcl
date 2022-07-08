@@ -17,6 +17,7 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
+set_param xicom.use_bs_reader 1
 create_project -in_memory -part xc7a100tfgg484-1
 
 set_param project.singleFileAddWarning.threshold 0
@@ -47,6 +48,7 @@ read_verilog -library xil_defaultlib {
   D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/control.v
   D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/digit_driver.v
   D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/execute.v
+  D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/hazard_handler.v
   D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/idecode.v
   D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/ifetch.v
   D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/miniRV.v
@@ -55,16 +57,16 @@ read_verilog -library xil_defaultlib {
   D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/switch_driver.v
   D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/new/top.v
 }
-read_ip -quiet D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk.xci
-set_property used_in_implementation false [get_files -all d:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk_board.xdc]
-set_property used_in_implementation false [get_files -all d:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk.xdc]
-set_property used_in_implementation false [get_files -all d:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk_ooc.xdc]
-
 read_ip -quiet D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/prgrom/prgrom.xci
 set_property used_in_implementation false [get_files -all d:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/prgrom/prgrom_ooc.xdc]
 
 read_ip -quiet D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/dram/dram.xci
 set_property used_in_implementation false [get_files -all d:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/dram/dram_ooc.xdc]
+
+read_ip -quiet D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk.xci
+set_property used_in_implementation false [get_files -all d:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk_board.xdc]
+set_property used_in_implementation false [get_files -all d:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk.xdc]
+set_property used_in_implementation false [get_files -all d:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk_ooc.xdc]
 
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -80,8 +82,6 @@ set_property used_in_implementation false [get_files D:/200210231/miniRV_pipelin
 read_xdc D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/constrs_1/new/pin.xdc
 set_property used_in_implementation false [get_files D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/constrs_1/new/pin.xdc]
 
-read_xdc dont_touch.xdc
-set_property used_in_implementation false [get_files dont_touch.xdc]
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]
 

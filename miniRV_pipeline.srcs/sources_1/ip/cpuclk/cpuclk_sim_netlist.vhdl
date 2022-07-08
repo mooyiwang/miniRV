@@ -1,11 +1,11 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
--- Date        : Fri Jun 24 14:59:50 2022
--- Host        : 217-15 running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top cpuclk -prefix
---               cpuclk_ clkcup_sim_netlist.vhdl
--- Design      : clkcup
+-- Date        : Fri Jul  8 17:35:20 2022
+-- Host        : 608-16 running 64-bit major release  (build 9200)
+-- Command     : write_vhdl -force -mode funcsim
+--               D:/200210231/miniRV_pipeline/miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk_sim_netlist.vhdl
+-- Design      : cpuclk
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
 -- Device      : xc7a100tfgg484-1
@@ -14,19 +14,21 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
-entity cpuclk_clkcup_clk_wiz is
+entity cpuclk_cpuclk_clk_wiz is
   port (
     clk_out1 : out STD_LOGIC;
     locked : out STD_LOGIC;
     clk_in1 : in STD_LOGIC
   );
-end cpuclk_clkcup_clk_wiz;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of cpuclk_cpuclk_clk_wiz : entity is "cpuclk_clk_wiz";
+end cpuclk_cpuclk_clk_wiz;
 
-architecture STRUCTURE of cpuclk_clkcup_clk_wiz is
-  signal clk_in1_clkcup : STD_LOGIC;
-  signal clk_out1_clkcup : STD_LOGIC;
-  signal clkfbout_buf_clkcup : STD_LOGIC;
-  signal clkfbout_clkcup : STD_LOGIC;
+architecture STRUCTURE of cpuclk_cpuclk_clk_wiz is
+  signal clk_in1_cpuclk : STD_LOGIC;
+  signal clk_out1_cpuclk : STD_LOGIC;
+  signal clkfbout_buf_cpuclk : STD_LOGIC;
+  signal clkfbout_cpuclk : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED : STD_LOGIC;
@@ -48,8 +50,8 @@ architecture STRUCTURE of cpuclk_clkcup_clk_wiz is
 begin
 clkf_buf: unisim.vcomponents.BUFG
      port map (
-      I => clkfbout_clkcup,
-      O => clkfbout_buf_clkcup
+      I => clkfbout_cpuclk,
+      O => clkfbout_buf_cpuclk
     );
 clkin1_ibufg: unisim.vcomponents.IBUF
     generic map(
@@ -57,21 +59,21 @@ clkin1_ibufg: unisim.vcomponents.IBUF
     )
         port map (
       I => clk_in1,
-      O => clk_in1_clkcup
+      O => clk_in1_cpuclk
     );
 clkout1_buf: unisim.vcomponents.BUFG
      port map (
-      I => clk_out1_clkcup,
+      I => clk_out1_cpuclk,
       O => clk_out1
     );
 plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
     generic map(
       BANDWIDTH => "OPTIMIZED",
-      CLKFBOUT_MULT => 33,
+      CLKFBOUT_MULT => 9,
       CLKFBOUT_PHASE => 0.000000,
       CLKIN1_PERIOD => 10.000000,
       CLKIN2_PERIOD => 0.000000,
-      CLKOUT0_DIVIDE => 33,
+      CLKOUT0_DIVIDE => 9,
       CLKOUT0_DUTY_CYCLE => 0.500000,
       CLKOUT0_PHASE => 0.000000,
       CLKOUT1_DIVIDE => 1,
@@ -90,7 +92,7 @@ plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
       CLKOUT5_DUTY_CYCLE => 0.500000,
       CLKOUT5_PHASE => 0.000000,
       COMPENSATION => "ZHOLD",
-      DIVCLK_DIVIDE => 4,
+      DIVCLK_DIVIDE => 1,
       IS_CLKINSEL_INVERTED => '0',
       IS_PWRDWN_INVERTED => '0',
       IS_RST_INVERTED => '0',
@@ -99,12 +101,12 @@ plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
       STARTUP_WAIT => "FALSE"
     )
         port map (
-      CLKFBIN => clkfbout_buf_clkcup,
-      CLKFBOUT => clkfbout_clkcup,
-      CLKIN1 => clk_in1_clkcup,
+      CLKFBIN => clkfbout_buf_cpuclk,
+      CLKFBOUT => clkfbout_cpuclk,
+      CLKIN1 => clk_in1_cpuclk,
       CLKIN2 => '0',
       CLKINSEL => '1',
-      CLKOUT0 => clk_out1_clkcup,
+      CLKOUT0 => clk_out1_cpuclk,
       CLKOUT1 => NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED,
       CLKOUT2 => NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED,
       CLKOUT3 => NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED,
@@ -138,7 +140,7 @@ end cpuclk;
 
 architecture STRUCTURE of cpuclk is
 begin
-inst: entity work.cpuclk_clkcup_clk_wiz
+inst: entity work.cpuclk_cpuclk_clk_wiz
      port map (
       clk_in1 => clk_in1,
       clk_out1 => clk_out1,

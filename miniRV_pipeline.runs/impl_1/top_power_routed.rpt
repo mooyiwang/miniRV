@@ -1,8 +1,8 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date             : Wed Jul  6 14:15:25 2022
-| Host             : 217-11 running 64-bit major release  (build 9200)
+| Date             : Fri Jul  8 17:42:51 2022
+| Host             : 608-16 running 64-bit major release  (build 9200)
 | Command          : report_power -file top_power_routed.rpt -pb top_power_summary_routed.pb -rpx top_power_routed.rpx
 | Design           : top
 | Device           : xc7a100tfgg484-1
@@ -52,17 +52,17 @@ Table of Contents
 +--------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
-| Clocks                   |     0.005 |        5 |       --- |             --- |
-| Slice Logic              |     0.008 |    18357 |       --- |             --- |
-|   LUT as Distributed RAM |     0.004 |     8192 |     19000 |           43.12 |
-|   LUT as Logic           |     0.003 |     2058 |     63400 |            3.25 |
+| Clocks                   |     0.021 |        5 |       --- |             --- |
+| Slice Logic              |     0.004 |    19167 |       --- |             --- |
+|   LUT as Logic           |     0.002 |     2218 |     63400 |            3.50 |
+|   LUT as Distributed RAM |     0.001 |     8192 |     19000 |           43.12 |
 |   F7/F8 Muxes            |    <0.001 |     6788 |     63400 |           10.71 |
-|   CARRY4                 |    <0.001 |       48 |     15850 |            0.30 |
-|   Register               |    <0.001 |     1166 |    126800 |            0.92 |
+|   Register               |    <0.001 |     1649 |    126800 |            1.30 |
+|   CARRY4                 |    <0.001 |       40 |     15850 |            0.25 |
 |   BUFG                   |    <0.001 |        1 |        32 |            3.13 |
 |   Others                 |     0.000 |       21 |       --- |             --- |
-| Signals                  |     0.031 |     4769 |       --- |             --- |
-| PLL                      |     0.098 |        1 |         6 |           16.67 |
+| Signals                  |     0.014 |     5332 |       --- |             --- |
+| PLL                      |     0.103 |        1 |         6 |           16.67 |
 | I/O                      |    <0.001 |       66 |       285 |           23.16 |
 | Static Power             |     0.097 |          |           |                 |
 | Total                    |     0.239 |          |           |                 |
@@ -75,8 +75,8 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.068 |       0.053 |      0.015 |
-| Vccaux    |       1.800 |     0.067 |       0.049 |      0.018 |
+| Vccint    |       1.000 |     0.064 |       0.049 |      0.015 |
+| Vccaux    |       1.800 |     0.070 |       0.052 |      0.018 |
 | Vcco33    |       3.300 |     0.004 |       0.000 |      0.004 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
 | Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |
@@ -132,8 +132,8 @@ Table of Contents
 | Clock           | Domain                        | Constraint (ns) |
 +-----------------+-------------------------------+-----------------+
 | clk             | clk                           |            10.0 |
-| clk_out1_clkcup | u_cpuclk/inst/clk_out1_clkcup |            40.0 |
-| clkfbout_clkcup | u_cpuclk/inst/clkfbout_clkcup |            40.0 |
+| clk_out1_cpuclk | u_cpuclk/inst/clk_out1_cpuclk |            10.0 |
+| clkfbout_cpuclk | u_cpuclk/inst/clkfbout_cpuclk |            10.0 |
 +-----------------+-------------------------------+-----------------+
 
 
@@ -143,22 +143,22 @@ Table of Contents
 3.1 By Hierarchy
 ----------------
 
-+-----------------------------------+-----------+
-| Name                              | Power (W) |
-+-----------------------------------+-----------+
-| top                               |     0.142 |
-|   u_bus_bridge                    |     0.011 |
-|     u_dram                        |     0.011 |
-|       U0                          |     0.011 |
-|   u_cpuclk                        |     0.098 |
-|     inst                          |     0.098 |
-|   u_irom                          |     0.002 |
-|     U0                            |     0.002 |
-|       synth_options.dist_mem_inst |     0.002 |
-|   u_miniRV                        |     0.031 |
-|     u_control                     |     0.026 |
-|     u_idecode                     |     0.005 |
-|       u_rsfile                    |     0.004 |
-+-----------------------------------+-----------+
++----------------+-----------+
+| Name           | Power (W) |
++----------------+-----------+
+| top            |     0.142 |
+|   u_bus_bridge |     0.020 |
+|     u_dram     |     0.019 |
+|       U0       |     0.019 |
+|   u_cpuclk     |     0.104 |
+|     inst       |     0.104 |
+|   u_miniRV     |     0.018 |
+|     u_exmem    |     0.010 |
+|     u_idecode  |     0.002 |
+|       u_rsfile |     0.002 |
+|     u_ifetch   |     0.001 |
+|     u_ifid     |     0.001 |
+|     u_memwb    |     0.003 |
++----------------+-----------+
 
 

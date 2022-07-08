@@ -8,14 +8,14 @@ vmap xil_defaultlib activehdl/xil_defaultlib
 vmap xpm activehdl/xpm
 
 vlog -work xil_defaultlib  -sv2k12 "+incdir+../../../ipstatic" \
-"E:/Xilinx/Vivado/2018.3/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" \
+"C:/Xilinx/Vivado/2018.3/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" \
 
 vcom -work xpm -93 \
-"E:/Xilinx/Vivado/2018.3/data/ip/xpm/xpm_VCOMP.vhd" \
+"C:/Xilinx/Vivado/2018.3/data/ip/xpm/xpm_VCOMP.vhd" \
 
 vlog -work xil_defaultlib  -v2k5 "+incdir+../../../ipstatic" \
-"../../../../miniRV.srcs/sources_1/ip/cpuclk/cpuclk_clk_wiz.v" \
-"../../../../miniRV.srcs/sources_1/ip/cpuclk/cpuclk.v" \
+"../../../../miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk_clk_wiz.v" \
+"../../../../miniRV_pipeline.srcs/sources_1/ip/cpuclk/cpuclk.v" \
 
 vlog -work xil_defaultlib \
 "glbl.v"

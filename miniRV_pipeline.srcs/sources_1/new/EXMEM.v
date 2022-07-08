@@ -30,8 +30,7 @@ module EXMEM(
     input wire [1:0]    ex_wb_sel,
     input wire [31:0]   ex_rD2,
     input wire          ex_dmem_wE,
-    input wire          ex_rf_rE1,
-    input wire          ex_rf_rE2,
+    input wire          ex_load,
     output reg [31:0]   mem_pc4,
     output reg [31:0]   mem_c,
     output reg          mem_rf_wE,
@@ -39,18 +38,11 @@ module EXMEM(
     output reg [1:0]    mem_wb_sel,
     output reg [31:0]   mem_rD2,
     output reg          mem_dmem_wE,
-    output reg          mem_rf_rE1,
-    output reg          mem_rf_rE2
+    output reg          mem_load
     );
-
-
 always@(posedge clk_i or negedge rst_n)begin 
-    if(~rst_n) mem_rf_rE1 <= 1'b0;
-    else mem_rf_rE1 <= ex_rf_rE1;
-end
-always@(posedge clk_i or negedge rst_n)begin 
-    if(~rst_n) mem_rf_rE2 <= 1'b0;
-    else mem_rf_rE2 <= ex_rf_rE2;
+    if(~rst_n) mem_load <= 1'b0;
+    else mem_load <= ex_load;
 end
 always@(posedge clk_i or negedge rst_n)begin 
     if(~rst_n) mem_pc4 <= 32'b0;

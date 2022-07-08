@@ -39,10 +39,16 @@ module control(
     output reg          dmem_we,
     output reg [1:0]    wd_sel,
     output reg          rf_rE1,
-    output reg          rf_rE2
+    output reg          rf_rE2,
+    output reg          load
     );
 
 //only consider the 24 instructions
+always@(*)begin
+    if(opcode==7'h03) load = 1'b1;
+    else load = 1'b0;
+end
+
 always@(*)begin
     if(opcode==7'h23 || opcode==7'h63) rf_we = 1'b0;
     else rf_we = 1'b1;
