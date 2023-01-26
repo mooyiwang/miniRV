@@ -1,4 +1,5 @@
 # miniRV
+![](system.png)
 a simple SoC within 5-stage pipeline miniRV CPU
 
 ## miniRV CPU
